@@ -1,0 +1,29 @@
+name: CI/CD for go-netconf-client
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Build Job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Golang vet
+        uses: actions/checkout@v3
+        run:
+          make go-vet
+
+      - name: Linters
+        uses: actions/checkout@v3
+        run:
+          make go-lint
+
+      - name: Unit tests
+        uses: actions/checkout@v3
+        run:
+          make go-test
