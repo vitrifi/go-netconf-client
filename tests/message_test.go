@@ -258,7 +258,7 @@ func TestNewKillSession(t *testing.T) {
 func TestNewCreateSubscription(t *testing.T) {
 	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><create-subscription xmlns=\"urn:ietf:params:xml:ns:netconf:notification:1.0\"><stream>netconf-stream</stream></create-subscription></rpc>"
 
-	rpc := message.NewCreateSubscription("", "", "netconf-stream")
+	rpc := message.NewCreateSubscription("", "", "netconf-stream", "")
 	output, err := xml.Marshal(rpc)
 	if err != nil {
 		t.Errorf(err.Error())

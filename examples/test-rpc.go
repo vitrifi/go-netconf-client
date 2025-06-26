@@ -29,7 +29,7 @@ func testNotification() {
 		reply := event.Notification()
 		println(reply.RawReply)
 	}
-	err := notificationSession.CreateNotificationStream(1, "", "", "", callback)
+	err := notificationSession.CreateNotificationStream(1, "", "", "", "", callback)
 	if err != nil {
 		panic("fail")
 	}
@@ -38,7 +38,7 @@ func testNotification() {
 	rpc := message.NewRPC(triggerNotification)
 	notificationSession.SyncRPC(rpc, 1)
 
-	err = notificationSession.CreateNotificationStream(1, "", "", "", callback)
+	err = notificationSession.CreateNotificationStream(1, "", "", "", "", callback)
 	if err == nil {
 		panic("must fail")
 	}
