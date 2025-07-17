@@ -16,17 +16,16 @@ limitations under the License.
 
 package message
 
-// DiscardChanges represents the NETCONF `discard-changes` message.
-// https://datatracker.ietf.org/doc/html/rfc6241#section-8.3.4.2
-type DiscardChanges struct {
+// Action represents the NETCONF `action` message.
+type Action struct {
 	RPC
-	DiscardChanges interface{} `xml:"discard-changes"`
+	Action interface{} `xml:"action"`
 }
 
-// NewDiscardChanges can be used to create a `discard-changes` message.
-func NewDiscardChanges(msg string) *DiscardChanges {
-	var rpc DiscardChanges
-	rpc.DiscardChanges = msg
+// NewAction can be used to create an `action` message.
+func NewAction(msg string) *Action {
+	var rpc Action
+	rpc.Action = msg
 	rpc.MessageID = uuid()
 	return &rpc
 }
