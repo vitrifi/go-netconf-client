@@ -313,6 +313,21 @@ func TestNewDiscardChanges(t *testing.T) {
 	}
 }
 
+func TestNewAction(t *testing.T) {
+	discardMsg := "some action message"
+	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><action>" + discardMsg + "</action></rpc>"
+
+	rpc := message.NewAction(discardMsg)
+	output, err := xml.Marshal(rpc)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
+		t.Errorf("TestNewAction:\nGot:%s\nWant:\n%s", got, want)
+	}
+}
+
 func TestNewRPC(t *testing.T) {
 	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit></commit></rpc>"
 	data := "<commit></commit>"
