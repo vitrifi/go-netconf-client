@@ -314,10 +314,10 @@ func TestNewDiscardChanges(t *testing.T) {
 }
 
 func TestNewAction(t *testing.T) {
-	discardMsg := "some action message"
-	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><action>" + discardMsg + "</action></rpc>"
+	actionMsg := "<some>message</some>"
+	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><action xmlns=\"urn:ietf:params:xml:ns:yang:1\">" + actionMsg + "</action></rpc>"
 
-	rpc := message.NewAction(discardMsg)
+	rpc := message.NewAction(actionMsg)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
 		t.Errorf(err.Error())

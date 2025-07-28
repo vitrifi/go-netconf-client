@@ -19,13 +19,15 @@ package message
 // Action represents the NETCONF `action` message.
 type Action struct {
 	RPC
-	Action interface{} `xml:"action"`
+	Action struct {
+		Data interface{} `xml:",innerxml"`
+	} `xml:"urn:ietf:params:xml:ns:yang:1 action"`
 }
 
 // NewAction can be used to create an `action` message.
 func NewAction(msg string) *Action {
 	var rpc Action
-	rpc.Action = msg
+	rpc.Action.Data = msg
 	rpc.MessageID = uuid()
 	return &rpc
 }
