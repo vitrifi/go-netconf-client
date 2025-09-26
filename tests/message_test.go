@@ -299,10 +299,9 @@ func TestNewCommit(t *testing.T) {
 }
 
 func TestNewDiscardChanges(t *testing.T) {
-	discardMsg := "some discard changes message"
-	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><discard-changes>" + discardMsg + "</discard-changes></rpc>"
+	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><discard-changes></discard-changes></rpc>"
 
-	rpc := message.NewDiscardChanges(discardMsg)
+	rpc := message.NewDiscardChanges()
 	output, err := xml.Marshal(rpc)
 	if err != nil {
 		t.Errorf(err.Error())

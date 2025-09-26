@@ -20,13 +20,12 @@ package message
 // https://datatracker.ietf.org/doc/html/rfc6241#section-8.3.4.2
 type DiscardChanges struct {
 	RPC
-	DiscardChanges interface{} `xml:"discard-changes"`
+	DiscardChanges struct{} `xml:"discard-changes"`
 }
 
 // NewDiscardChanges can be used to create a `discard-changes` message.
-func NewDiscardChanges(msg string) *DiscardChanges {
+func NewDiscardChanges() *DiscardChanges {
 	var rpc DiscardChanges
-	rpc.DiscardChanges = msg
 	rpc.MessageID = uuid()
 	return &rpc
 }
