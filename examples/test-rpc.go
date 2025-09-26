@@ -90,7 +90,11 @@ func execRPC(session *netconf.Session) {
 	time.Sleep(100 * time.Millisecond)
 
 	// Commit
-	c := message.NewCommit("")
+	const (
+		confirmed      = false
+		confirmTimeout = 0
+	)
+	c := message.NewCommit(confirmed, confirmTimeout)
 	session.AsyncRPC(c, defaultLogRPCReplyCallback(c.MessageID))
 	time.Sleep(100 * time.Millisecond)
 
