@@ -1,5 +1,5 @@
 /*
-Copyright 2025. Ivan Eroshkin
+Copyright 2025. Hannu Kamarainen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,16 +16,21 @@ limitations under the License.
 
 package message
 
-// DiscardChanges represents the NETCONF `discard-changes` message.
-// https://datatracker.ietf.org/doc/html/rfc6241#section-8.3.4.2
-type DiscardChanges struct {
+// CancelCommit represents the NETCONF `cancel-commit` message.
+// https://datatracker.ietf.org/doc/html/rfc6241#section-8.4.4.1
+type CancelCommit struct {
 	RPC
-	DiscardChanges struct{} `xml:"discard-changes"`
+	CancelCommit struct{} `xml:"cancel-commit"`
 }
 
-// NewDiscardChanges can be used to create a `discard-changes` message.
-func NewDiscardChanges() *DiscardChanges {
-	var rpc DiscardChanges
+// NewCancelCommit can be used to create a `cancel-commit` message.
+//
+// Example cancel-commit message:
+// <rpc message-id="102" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+// ..<cancel-commit/>
+// </rpc>
+func NewCancelCommit() *CancelCommit {
+	var rpc CancelCommit
 	rpc.MessageID = uuid()
 	return &rpc
 }

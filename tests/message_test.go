@@ -284,25 +284,78 @@ func TestNewEstablishSubscription(t *testing.T) {
 }
 
 func TestNewCommit(t *testing.T) {
-	commitMsg := "some commit message"
-	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit>" + commitMsg + "</commit></rpc>"
+	type args struct {
+		expected       string
+		confirmed      bool
+		confirmTimeout int
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "normal commit",
+			args: args{
+				expected: "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit></commit></rpc>",
+			},
+		},
+		{
+			name: "confirmed-commit",
+			args: args{
+				expected:  "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirmed></confirmed></commit></rpc>",
+				confirmed: true,
+			},
+		},
+		{
+			name: "confirm-timeout",
+			args: args{
+				expected:       "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirm-timeout>120</confirm-timeout></commit></rpc>",
+				confirmTimeout: 120,
+			},
+		},
+		{
+			name: "confirmed-commit and confirm-timeout",
+			args: args{
+				expected:       "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirmed></confirmed><confirm-timeout>120</confirm-timeout></commit></rpc>",
+				confirmed:      true,
+				confirmTimeout: 120,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 
-	rpc := message.NewCommit(commitMsg)
+			rpc := message.NewCommit(tt.args.confirmed, tt.args.confirmTimeout)
+			output, err := xml.Marshal(rpc)
+			if err != nil {
+				t.Errorf(err.Error())
+			}
+
+			if got, want := StripUUID(string(output)), StripUUID(tt.args.expected); got != want {
+				t.Errorf("TestNewCommit:\nGot:%s\nWant:\n%s", got, want)
+			}
+		})
+	}
+}
+
+func TestNewCancelCommit(t *testing.T) {
+	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><cancel-commit></cancel-commit></rpc>"
+
+	rpc := message.NewCancelCommit()
 	output, err := xml.Marshal(rpc)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
-		t.Errorf("TestNewCommit:\nGot:%s\nWant:\n%s", got, want)
+		t.Errorf("TestNewCancelCommit:\nGot:%s\nWant:\n%s", got, want)
 	}
 }
 
 func TestNewDiscardChanges(t *testing.T) {
-	discardMsg := "some discard changes message"
-	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><discard-changes>" + discardMsg + "</discard-changes></rpc>"
+	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><discard-changes></discard-changes></rpc>"
 
-	rpc := message.NewDiscardChanges(discardMsg)
+	rpc := message.NewDiscardChanges()
 	output, err := xml.Marshal(rpc)
 	if err != nil {
 		t.Errorf(err.Error())
