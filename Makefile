@@ -15,6 +15,7 @@
 ###########################################################################
 
 PROJECT_DIR=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PKGS=$(shell go list ./... | grep -v "vendor")
 COVERPROFILE_PATH=$(PROJECT_DIR)/build/coverage.txt
 
 all: help
@@ -30,7 +31,7 @@ go-lint-install: # @HELP installs linters (i.e., 'golint') locally
 
 go-lint: # @HELP runs linters against the Go codebase (except 'vendor' folder)
 go-lint: go-lint-install
-	golint ./...
+	golint $(PKGS)
 
 go-test: # @HELP runs unit tests to test the Go code
 	mkdir -p $(PROJECT_DIR)/build

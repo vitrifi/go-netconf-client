@@ -83,7 +83,7 @@ func TestGetWithoutFilter(t *testing.T) {
 	rpc := message.NewGet(message.FilterTypeSubtree, "")
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -97,7 +97,7 @@ func TestGetWithFilter(t *testing.T) {
 	rpc := message.NewGet(message.FilterTypeSubtree, data)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -124,7 +124,7 @@ func TestGetConfigWithNoFilter(t *testing.T) {
 	rpc := message.NewGetConfig(message.DatastoreRunning, message.FilterTypeSubtree, "")
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -138,7 +138,7 @@ func TestGetConfigWithFilter(t *testing.T) {
 	rpc := message.NewGetConfig(message.DatastoreRunning, message.FilterTypeSubtree, data)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -152,7 +152,7 @@ func TestEditConfig(t *testing.T) {
 	rpc := message.NewEditConfig(message.DatastoreRunning, message.DefaultOperationTypeMerge, data)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -192,7 +192,7 @@ func TestLock(t *testing.T) {
 	rpc := message.NewLock(message.DatastoreRunning)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -206,7 +206,7 @@ func TestUnlock(t *testing.T) {
 	rpc := message.NewUnlock(message.DatastoreRunning)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -220,7 +220,7 @@ func TestNewValidate(t *testing.T) {
 	rpc := message.NewValidate(message.DatastoreRunning)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -234,7 +234,7 @@ func TestNewCloseSession(t *testing.T) {
 	rpc := message.NewCloseSession()
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -247,7 +247,7 @@ func TestNewKillSession(t *testing.T) {
 	rpc := message.NewKillSession("4")
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -261,7 +261,7 @@ func TestNewCreateSubscription(t *testing.T) {
 	rpc := message.NewCreateSubscription("", "", "netconf-stream", "")
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -275,7 +275,7 @@ func TestNewEstablishSubscription(t *testing.T) {
 	rpc := message.NewEstablishSubscription("<establish-subscription xmlns=\"urn:ietf:params:xml:ns:yang:ietf-event-notifications\" xmlns:yp=\"urn:ietf:params:xml:ns:yang:ietf-yang-push\"><stream>yp:yang-push</stream><yp:xpath-filter>/mdt-oper:mdt-oper-data/mdt-subscriptions</yp:xpath-filter><yp:period>1000</yp:period></establish-subscription>")
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -328,7 +328,7 @@ func TestNewCommit(t *testing.T) {
 			rpc := message.NewCommit(tt.args.confirmed, tt.args.confirmTimeout)
 			output, err := xml.Marshal(rpc)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("%s", err.Error())
 			}
 
 			if got, want := StripUUID(string(output)), StripUUID(tt.args.expected); got != want {
@@ -344,7 +344,7 @@ func TestNewCancelCommit(t *testing.T) {
 	rpc := message.NewCancelCommit()
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -358,7 +358,7 @@ func TestNewDiscardChanges(t *testing.T) {
 	rpc := message.NewDiscardChanges()
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -373,7 +373,7 @@ func TestNewAction(t *testing.T) {
 	rpc := message.NewAction(actionMsg)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
@@ -388,7 +388,7 @@ func TestNewRPC(t *testing.T) {
 	rpc := message.NewRPC(data)
 	output, err := xml.Marshal(rpc)
 	if err != nil {
-		t.Errorf(err.Error())
+		t.Errorf("%s", err.Error())
 	}
 
 	if got, want := StripUUID(string(output)), StripUUID(expected); got != want {
