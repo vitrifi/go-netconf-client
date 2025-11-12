@@ -1,6 +1,6 @@
 module github.com/vitrifi/go-netconf-client
 
-go 1.25.4
+go 1.25
 
 require golang.org/x/crypto v0.44.0
 
