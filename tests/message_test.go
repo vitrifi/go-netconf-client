@@ -338,6 +338,98 @@ func TestNewCommit(t *testing.T) {
 	}
 }
 
+func TestNewConfirmedCommit(t *testing.T) {
+	type args struct {
+		expected       string
+		confirmTimeout int
+		persist        string
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "confirmed only",
+			args: args{
+				expected: "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirmed></confirmed></commit></rpc>",
+			},
+		},
+		{
+			name: "confirmed with timeout",
+			args: args{
+				expected:       "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirmed></confirmed><confirm-timeout>120</confirm-timeout></commit></rpc>",
+				confirmTimeout: 120,
+			},
+		},
+		{
+			name: "confirmed with persist",
+			args: args{
+				expected: "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirmed></confirmed><persist>IQ,d4668</persist></commit></rpc>",
+				persist:  "IQ,d4668",
+			},
+		},
+		{
+			name: "confirmed with timeout and persist",
+			args: args{
+				expected:       "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><confirmed></confirmed><confirm-timeout>120</confirm-timeout><persist>IQ,d4668</persist></commit></rpc>",
+				confirmTimeout: 120,
+				persist:        "IQ,d4668",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			rpc := message.NewConfirmedCommit(tt.args.confirmTimeout, tt.args.persist)
+			output, err := xml.Marshal(rpc)
+			if err != nil {
+				t.Errorf("%s", err.Error())
+			}
+
+			if got, want := StripUUID(string(output)), StripUUID(tt.args.expected); got != want {
+				t.Errorf("TestNewConfirmedCommit:\nGot:\n%s\nWant:\n%s", got, want)
+			}
+		})
+	}
+}
+
+func TestNewPersistIDCommit(t *testing.T) {
+	type args struct {
+		expected  string
+		persistID string
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{
+			name: "persist-id only",
+			args: args{
+				expected:  "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit><persist-id>IQ,d4668</persist-id></commit></rpc>",
+				persistID: "IQ,d4668",
+			},
+		},
+		{
+			name: "empty persist-id",
+			args: args{
+				expected: "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><commit></commit></rpc>",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			rpc := message.NewPersistIDCommit(tt.args.persistID)
+			output, err := xml.Marshal(rpc)
+			if err != nil {
+				t.Errorf("%s", err.Error())
+			}
+
+			if got, want := StripUUID(string(output)), StripUUID(tt.args.expected); got != want {
+				t.Errorf("testNewPersistIDCommit:\nGot:\n%s\nWant:\n%s", got, want)
+			}
+		})
+	}
+}
+
 func TestNewCancelCommit(t *testing.T) {
 	expected := "<rpc xmlns=\"urn:ietf:params:xml:ns:netconf:base:1.0\" message-id=\"\"><cancel-commit></cancel-commit></rpc>"
 

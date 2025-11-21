@@ -27,6 +27,8 @@ type commit struct {
 	XMLName        string  `xml:"commit"`
 	Confirmed      *string `xml:"confirmed,omitempty"`
 	ConfirmTimeout *int    `xml:"confirm-timeout,omitempty"`
+	Persist        *string `xml:"persist,omitempty"`
+	PersistID      *string `xml:"persist-id,omitempty"`
 }
 
 // NewCommit can be used to create a `commit` message.
@@ -58,6 +60,52 @@ func NewCommit(confirmed bool, confirmTimeout int) *Commit {
 	}
 	if confirmTimeout > 0 {
 		rpc.Commit.ConfirmTimeout = &confirmTimeout
+	}
+	rpc.MessageID = uuid()
+	return &rpc
+}
+
+// NewConfirmedCommit creates a confirmed-commit message with an optional
+// confirm-timeout and persist token.
+//
+// Example confirmed-commit with persist:
+// <rpc message-id="101">
+// ..<commit>
+// ....<confirmed/>
+// ....<confirm-timeout>120</confirm-timeout>
+// ....<persist>IQ,d4668</persist>
+// ..</commit>
+// </rpc>
+func NewConfirmedCommit(confirmTimeout int, persist string) *Commit {
+	var rpc Commit
+	s := ""
+	rpc.Commit.Confirmed = &s
+	if confirmTimeout > 0 {
+		rpc.Commit.ConfirmTimeout = &confirmTimeout
+	}
+	if persist != "" {
+		rpc.Commit.Persist = &persist
+	}
+	rpc.MessageID = uuid()
+	return &rpc
+}
+
+// NewPersistIDCommit creates a commit message containing only a
+// persist-id element. This is used to confirm a previously-issued
+// confirmed-commit that included a persist token.
+//
+// <rpc message-id="101">
+// ..<commit>
+// ....<persist-id>IQ,d4668</persist-id>
+// ..</commit>
+// </rpc>
+//
+// This message must reference the same token that was provided in
+// the initial confirmed-commit.
+func NewPersistIDCommit(persistID string) *Commit {
+	var rpc Commit
+	if persistID != "" {
+		rpc.Commit.PersistID = &persistID
 	}
 	rpc.MessageID = uuid()
 	return &rpc
